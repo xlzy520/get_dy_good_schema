@@ -72,9 +72,9 @@
       <div class="title" style="font-size: 24px;color: black">
         wx: appl532978
       </div>
-      <div class="recommend-ext">
-        每日上传次数最大为400次
-      </div>
+<!--      <div class="recommend-ext">-->
+<!--        每日上传次数最大为200次-->
+<!--      </div>-->
       <div class="form upload-container" v-loading="loading">
         <el-upload
           ref="upload"
@@ -97,6 +97,9 @@
         <div class="upload-list" v-show="hasValue">
           <div v-for="item in list" :key="item.url" class="short-url-item">
             <div class="img-info">
+              <div>
+                上传时间：{{item.uploadTime}}
+              </div>
               <div style="display:flex;justify-content: space-between;line-height: 1;align-items: center">
                 <div class="upload-image-name">{{item.name}}</div>
                 <div class="copy" @click="copy(item.url)">复制</div>
@@ -290,10 +293,11 @@
               return;
             }
             this.loading = true;
-            const searchParams = new URLSearchParams();
+            const searchParams = new URLSearchParams(location.search);
             const key = searchParams.get('key');
             const formData = new FormData();
             formData.append('image', file);
+            formData.append('key', key);
             // 上传图片
             fetch(baseUrl+'/upload', {
               method: 'POST',
@@ -303,12 +307,13 @@
               .then((res) => {
                 console.log(res, '===========打印的 ------ ');
                 if (res.schema && res.schema.includes('sslocal')) {
-                  this.copyTextToClipboard(res.schema);
+                  this.copy(res.schema);
                   file.status = 'success';
                   this.list.unshift({
                     url: res.schema,
                     name: file.name,
                     localUrl: file.url,
+                    uploadTime: new Date().toLocaleString(),
                   });
                   console.log(this.list);
                 } else {
