@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <title>抖音商品码图片上传</title>
+    <meta name="referrer" content="no-referrer" />
+    <script src="https://vuemin.oss-cn-shanghai.aliyuncs.com/vue.min.js"></script>
+    <link rel="stylesheet" href="https://express.xlzy520.cn/bilibili/index.css" />
+    <link rel="stylesheet" href="https://express.xlzy520.cn/bilibili/paper.min.css" />
+    <script src="https://vuemin.oss-cn-shanghai.aliyuncs.com/element-ui/index.js"></script>
+    <link
+      href="https://vuemin.oss-cn-shanghai.aliyuncs.com/element-ui/theme-chalk/index.css"
+      rel="stylesheet"
+    />
+    <style>
+      .el-image {
+        width: 200px;
+      }
+      .flex-items-center {
+        display: flex;
+        align-items: center;
+      }
+      .ml-2 {
+        margin-left: 10px;
+      }
+      .ml-4 {
+        margin-left: 20px;
+      }
+      .mb-2 {
+        margin-bottom: 10px;
+      }
+      .mt-2 {
+        margin-top: 10px;
+      }
+      .el-upload__tip {
+        font-size: 20px;
+        font-weight: 500;
+      }
+      .recommend-ext {
+        text-align: center;
+        color: #ff5c53;
+        margin: auto;
+        margin-bottom: 20px;
+      }
+      .upload-image-name{
+        max-width: 80%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .copy{
+        cursor: pointer;
+        color: #409eff;
+        border: 1px solid #409eff;
+        padding: 10px 15px;
+        border-radius: 3px;
+        width: 100px;
+        text-align: center;
+      }
+      .short-url{
+        margin-top: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app" @paste="handleTPaste">
+      <h3 class="title">抖音商品码图片转商品链接工具</h3>
+      <div class="title" style="font-size: 24px;color: black">
+        wx: appl532978
+      </div>
+      <div class="recommend-ext">
+        每日上传次数最大为400次
+      </div>
+      <div class="form upload-container" v-loading="loading">
+        <el-upload
+          ref="upload"
+          :action="action"
+          multiple
+          accept="image/*"
+          list-type="picture-card"
+          :file-list="fileList"
+          :show-file-list="false"
+          :on-preview="handlePictureCardPreview"
+          :http-request="handleUpload"
+        >
+          <i class="el-icon-plus"></i>
+          <div class="el-upload__tip" slot="tip">可按下 Ctrl+V 粘贴上传</div>
+        </el-upload>
+      </div>
+      <div class="short-url">
+        <div class="short-url-title">已上传图片</div>
+        <div v-show="!hasValue" class="short-url-item bg-gray"></div>
+        <div class="upload-list" v-show="hasValue">
+          <div v-for="item in list" :key="item.url" class="short-url-item">
+            <div class="img-info">
+              <div style="display:flex;justify-content: space-between;line-height: 1;align-items: center">
+                <div class="upload-image-name">{{item.name}}</div>
+                <div class="copy" @click="copy(item.url)">复制</div>
+              </div>
+              <a
+                id="short-url-value"
+                rel="noreferrer"
+                :href="item.url"
+                target="_blank"
+                style="width: 100%;word-break: break-all;"
+              >
+                <div class="short-url-value">{{item.url}}</div>
+                <svg
+                  class="outbound-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                  focusable="false"
+                  x="0px"
+                  y="0px"
+                  viewBox="0 0 100 100"
+                  width="15"
+                  height="15"
+                  class="icon outbound"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"
+                  ></path>
+                  <polygon
+                    fill="currentColor"
+                    points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"
+                  ></polygon>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <el-dialog :visible.sync="dialogVisible">
+        <img width="100%" :src="dialogImageUrl" alt="" />
+      </el-dialog>
+    </div>
+
+    <script>
+      const isDev = location.hostname === 'localhost';
+      const baseUrl = '';
+
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = today.getMonth() + 1;
+      const day = today.getDate();
+      const date = `${year}-${month}-${day}`;
+
+      const app = new Vue({
+        el: '#app',
+        data() {
+          return {
+            dialogImageUrl: '',
+            dialogVisible: false,
+            // action: 'https://jsonplaceholder.typicode.com/posts/',
+            action: baseUrl + '/bili/upload',
+            fileList: [],
+            list: [],
+            SESSDATA: '',
+            bili_jct: '',
+            loading: false,
+            IPInfo: null,
+            useUpload2: false,
+            useUpload3: false,
+          };
+        },
+        computed: {
+          hasValue() {
+            return this.list.length > 0;
+          },
+        },
+        methods: {
+          saveConfig() {
+            localStorage.setItem('SESSDATA', this.SESSDATA);
+            localStorage.setItem('bili_jct', this.bili_jct);
+            this.$message.success('保存成功');
+          },
+          copyTextToClipboard(input) {
+            var el = document.createElement('textarea');
+
+            el.value = input;
+
+            // Prevent keyboard from showing on mobile
+            el.setAttribute('readonly', '');
+
+            el.style.contain = 'strict';
+            el.style.position = 'absolute';
+            el.style.left = '-9999px';
+            el.style.fontSize = '12pt'; // Prevent zooming on iOS
+
+            var selection = getSelection();
+            var originalRange = false;
+            if (selection.rangeCount > 0) {
+              originalRange = selection.getRangeAt(0);
+            }
+
+            document.body.appendChild(el);
+            el.select();
+
+            // Explicit selection workaround for iOS
+            el.selectionStart = 0;
+            el.selectionEnd = input.length;
+
+            var success = false;
+            try {
+              success = document.execCommand('copy');
+            } catch (err) {}
+
+            document.body.removeChild(el);
+
+            if (originalRange) {
+              selection.removeAllRanges();
+              selection.addRange(originalRange);
+            }
+
+            return success;
+          },
+          copy(url) {
+            this.copyTextToClipboard(url);
+            this.$message({
+              message: '复制成功',
+              type: 'success',
+            });
+          },
+          filterImages(items) {
+            let i = 0;
+            while (i < items.length) {
+              if (items[i].type.includes('image')) {
+                return items[i];
+              }
+              i++;
+            }
+            return false;
+          },
+          getFilename(e) {
+            let value;
+            if (window.clipboardData && window.clipboardData.getData) {
+              value = window.clipboardData.getData('Text');
+            } else if (e.clipboardData && e.clipboardData.getData) {
+              value = e.clipboardData.getData('text/plain');
+            }
+            value = value.split('\r');
+            return value[0];
+          },
+          getPasteImg(event) {
+            if (event.clipboardData && event.clipboardData.items) {
+              const image = this.filterImages(event.clipboardData.items);
+              if (image) {
+                event.preventDefault();
+                const file = image.getAsFile();
+                const name =
+                  this.getFilename(event) || `image-${Date.now()}.png`;
+                file.uid = name;
+                const url = URL.createObjectURL(file);
+                return {
+                  name,
+                  file,
+                  raw: file,
+                  uid: name,
+                  status: 'ready',
+                  url,
+                };
+              }
+            }
+          },
+          handlePictureCardPreview(file) {
+            this.dialogImageUrl = file.url;
+            this.dialogVisible = true;
+          },
+          handleTPaste(event) {
+            const image = this.getPasteImg(event);
+            if (image) {
+              this.fileList = [image];
+              this.$nextTick(() => {
+                this.$refs.upload.submit(image);
+              });
+            }
+          },
+          handleUpload({ file }) {
+            // 判断文件大小，如果大于3M则不允许上传
+            if (file.size > 3 * 1024 * 1024) {
+              this.$message.error(
+                '图片大小不能超过3M',
+              );
+              return;
+            }
+            this.loading = true;
+            const searchParams = new URLSearchParams();
+            const key = searchParams.get('key');
+            const formData = new FormData();
+            formData.append('image', file);
+            // 上传图片
+            fetch(baseUrl+'/upload', {
+              method: 'POST',
+              body: formData,
+            })
+              .then((res) => res.json())
+              .then((res) => {
+                console.log(res, '===========打印的 ------ ');
+                if (res.schema && res.schema.includes('sslocal')) {
+                  this.copyTextToClipboard(res.schema);
+                  file.status = 'success';
+                  this.list.unshift({
+                    url: res.schema,
+                    name: file.name,
+                    localUrl: file.url,
+                  });
+                  console.log(this.list);
+                } else {
+                  this.fileList.pop();
+                  this.$message.error(
+                    res.message || '请求频率过高，请稍后再试',
+                  );
+                }
+              })
+              .catch((err) => {
+                this.fileList.pop();
+                this.$message.error('上传失败', err.message);
+              })
+              .finally(() => {
+                this.loading = false;
+              });
+          },
+        },
+        mounted() {
+
+        },
+      });
+    </script>
+  </body>
+</html>
