@@ -192,7 +192,9 @@ app.get('/dy/proxy', async (req, res) => {
       "Referer": "http://w.mcoud.cn/",
     }
   })
-  res.send(data.data);
+  res.send({
+    schema: data.data.data.schema
+  });
 })
 
 app.post('/upload', upload.single('image'), (req, res) => {
@@ -247,7 +249,9 @@ app.post('/upload', upload.single('image'), (req, res) => {
       program.kill();
     } else if(data.toString().includes('codec')){
       res.status(500).send({
-        message: '由于该用户昵称包含emoji表情，二维码图片解码错误，还在尝试解决',
+        code: 600
+        // message: '由于该用户昵称包含emoji表情，二维码图片解码错误，还在尝试解决',
+        // message: '由于该用户昵称包含emoji表情，二维码图片解码错误，还在尝试解决',
       });
       program.kill();
     }
@@ -255,7 +259,7 @@ app.post('/upload', upload.single('image'), (req, res) => {
   
   program.stderr.on('data', (data) => {
     console.error(`错误: ${data}`);
-    res.status(500).send(data); // 发生错误时，将错误信息发送给客户端
+    // res.status(500).send(data); // 发生错误时，将错误信息发送给客户端
   });
   
   program.stdin.write(imagePath + '\n');
