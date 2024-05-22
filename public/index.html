@@ -286,21 +286,33 @@
       },
       decodeQRCode(file){
         const formData = new FormData();
-        formData.append('file', file);
-        return fetch('https://api.linhun.vip/api/QRcodejx?url=https://api.linhun.vip/api/QRcode?url=%E6%9E%97%E9%AD%82%E7%A7%91%E6%8A%80&apiKey=ec8501c0a59ca3ee77414bfc01cf479c', {
-          method: 'POST',
-          body: formData,
-        })
-          .then((res) => res.json())
-          .then((res) => {
-            const code = res.analysis
-            return code
-          })
-
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        return new Promise((resolve, reject) => {
+          reader.onload = function () {
+            const base64 = reader.result;
+            formData.append('qr_base64', base64);
+            fetch('https://api.2weima.com/api/qrdecode', {
+              method: 'POST',
+              body: formData,
+              headers: {
+                Authorization: 'Bearer 4397|vwZZEUxGa2Z4ktrRQJGkTDcvRarDGh4GfYnkixY2',
+              },
+            })
+              .then((res) => res.json())
+              .then((res) => {
+                const code = res.qr_content;
+                resolve(code);
+              })
+              .catch((err) => {
+                reject(err);
+              });
+          };
+        });
       },
       getProxyCode(code){
         return fetch(baseUrl+'/dy/proxy?code='+code).then(res=>res.json()).then(res=>{
-          return res
+          return res.schema
         })
       },
       handleUpload({ file }) {
@@ -326,6 +338,8 @@
           .then((res) => {
             console.log(res, '===========打印的 ------ ');
             if (res.schema && res.schema.includes('sslocal')) {
+              this.loading = false;
+
               this.copy(res.schema);
               file.status = 'success';
               this.list.unshift({
@@ -350,6 +364,11 @@
                       uploadTime: new Date().toLocaleString(),
                     });
                   })
+                }).catch(err=> {
+                  this.loading = false;
+                  this.$message.error(
+                    '图片解析服务失败，可能是图片比较糊，可以截图二维码部分再上传，还有问题的话联系GPT帮忙'
+                  );
                 })
               } else {
                 this.loading = false;

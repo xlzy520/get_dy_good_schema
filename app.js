@@ -93,16 +93,13 @@ app.get('/upload', (req, res) => {
 });
 
 const LicenseMap = {
-  'bqqysv28vkh': {
-    name: '鱼跃传媒',
-  },
   h37yljwdqip:{
     name: '铁蛋',
   },
   '2smw1w0pncf':{
     name: '瑜',
   },
-  'vecxuskt4m':{
+  'vecxuskt4u':{
     name: '小沐',
   },
   '8jyppjieqqh':{
@@ -114,8 +111,8 @@ const LicenseMap = {
   '08qgf7t8go4f':{
     name: '阿洋',
   },
-  'bw05171rvyi':{
-    name: '眼李',
+  'bw05171rvyK':{
+    name: '杰瑞0520',
   },
   'pmt3d9lut89':{
     name: '同',
@@ -126,8 +123,8 @@ const LicenseMap = {
   'a6hkvciv3ub':{
     name: '中二'
   },
-  'qedk9z3q34':{
-    name: 'chao'
+  'qedk9z3q84':{
+    name: '杰瑞3'
   },
   '3x5sp2ycgua':{
     name: 'q1'
@@ -149,6 +146,12 @@ const LicenseMap = {
   },
   'irtr9o8n14': {
     name: 'agf2'
+  },
+  '4zmg3g7jab9': {
+    name: 'wuqu'
+  },
+  'ew02p4q7uhh':{
+    name: 'tingfeng'
   }
   
 }
@@ -197,6 +200,18 @@ app.get('/dy/proxy', async (req, res) => {
   });
 })
 
+app.get('/dy_schema', async (req, res) => {
+  const code = req.query.code;
+  const data = await axios.get('http://w.mcoud.cn/api/eem.php/proxy?code='+code, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Linux; Android 10; M2007J20CG) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.181 Mobile Safari/537.36',
+      "Origin": "http://w.mcoud.cn",
+      "Referer": "http://w.mcoud.cn/",
+    }
+  })
+  res.send(data.data.data.schema);
+})
+
 app.post('/upload', upload.single('image'), (req, res) => {
   const { key } = req.body;
   if (!key) {
@@ -221,9 +236,9 @@ app.post('/upload', upload.single('image'), (req, res) => {
     GlobalData.uploadMap[key] += 1;
   }
   
-  if (GlobalData.uploadMap[key] > 200) {
+  if (GlobalData.uploadMap[key] > 150) {
     res.status(500).send({
-      message: '超过每天上传次数，请联系gpt',
+      message: '此号超过每天上传次数',
     });
     return;
   }
