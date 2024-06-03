@@ -126,9 +126,6 @@ const LicenseMap = {
   'qedk9z3q84':{
     name: '杰瑞3'
   },
-  '3x5sp2ycgua':{
-    name: 'q1'
-  },
   'yv890xzq1o9':{
     name: 'q2'
   },
@@ -141,8 +138,8 @@ const LicenseMap = {
   'e85zal70mvr':{
     name: 'xiaomu2'
   },
-  'e74dto6p6k': {
-    name: '甜到心里'
+  '7uxjqwrdm7q': {
+    name: 'xiexiaohei'
   },
   'irtr9o8n14': {
     name: 'agf2'
@@ -152,9 +149,23 @@ const LicenseMap = {
   },
   'ew02p4q7uhh':{
     name: 'tingfeng'
+  },
+  'g2cpc4m7w5':{
+    name: 'LLL'
+  },
+  '77u95qsl4hq':{
+    name: 'DP'
+  },
+  '91zd2cx6ba':{
+    name: 'S'
+  },
+  'mgieprdrujg':{
+    name: 'H.wang'
   }
   
 }
+
+const IPMap = {}
 
 
 // 实现一个Map，要求每个key，每天最多只能上传300次，超过300次则返回错误信息。每天0点清空Map
@@ -183,37 +194,110 @@ app.get('/clear', (req, res) => {
 
 // 对象输出uploadMap
 app.get('/uploadMap', (req, res) => {
-  res.send(GlobalData);
+  res.send({GlobalData, IPMap});
 });
 
-app.get('/dy/proxy', async (req, res) => {
+app.get('/schema', async (req, res) => {
   const code = req.query.code;
-  const data = await axios.get('http://w.mcoud.cn/api/eem.php/proxy?code='+code, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Linux; Android 10; M2007J20CG) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.181 Mobile Safari/537.36',
-      "Origin": "http://w.mcoud.cn",
-      "Referer": "http://w.mcoud.cn/",
-    }
-  })
-  res.send({
-    schema: data.data.data.schema
-  });
+  const key = req.query.key;
+  if (!code) {
+    res.status(500).send({
+      message: 'code错误',
+    });
+    return;
+  }
+  if (!LicenseMap[key]) {
+    res.status(500).send({
+      message: 'key错误',
+    });
+    return;
+  }
+  
+  let headers = {
+    Host: 'api3-normal-c.amemv.com',
+    'x-tt-request-tag': 't=1;n=0',
+    'x-tt-dt':
+      'AAA7YJMBTI6S5Q2DBZTSH3KECZDDCQOSWYSJQC2CJTUROFXL3CVLZEZDUGJBKY2WP5VCGFEAM24NYGC5IUXNBVFWQIIAKEARENKCXV3WEKMXMOW4SCVSBA5KHYJPQ',
+    activity_now_client: '1717338345276',
+    'x-ss-req-ticket': '1717338434926',
+    'x-tt-multi-sids': '4075226948975140%3A6b6985a8fb5dd8097b666380bea193c8',
+    'sdk-version': '2',
+    'x-tt-token':
+      '006b6985a8fb5dd8097b666380bea193c804a2496d6f83686564d052ae9f4cb2d7fb126cb2e35348d188b795d2e820a53af4781bf58b4abf20b280f42bd283da43733ad381232e16c83b9da482548b6789010f6e4ba7e8e06a032d1a4e38dd32de488-1.0.1',
+    multi_login: '1',
+    'passport-sdk-version': '203214',
+    'x-vc-bdturing-sdk-version': '3.7.2.cn',
+    'x-tt-store-region': 'cn-hn',
+    'x-tt-store-region-src': 'uid',
+    'user-agent':
+      'com.ss.android.ugc.aweme.lite/300101 (Linux; U; Android 10; zh_CN_#Hans; Pixel 4; Build/QQ2A.200405.005;tt-ok/3.12.13.1)',
+  };
+  
+  let url = 'https://api3-normal-c.amemv.com/aweme/share/carrier/parse/';
+  
+  let params = {
+    carrier_type: '3',
+    code_info: code,
+    source_from: 'scan',
+    klink_egdi: 'AALOYdhUIujTCtPeli80wTsC0FwlUA0OnbubsPs7tH6/qNe2HwwnVBw+',
+    iid: '3331957378799338',
+    device_id: '2593081627785290',
+    ac: 'wifi',
+    channel: 'city_YZ_1',
+    aid: '2329',
+    app_name: 'douyin_lite',
+    version_code: '300100',
+    version_name: '30.1.0',
+    device_platform: 'android',
+    os: 'android',
+    ssmix: 'a',
+    device_type: 'Pixel 4',
+    device_brand: 'google',
+    language: 'zh',
+    os_api: '29',
+    os_version: '10',
+    openudid: '91766e55bdb0e1f1',
+    manifest_version_code: '300101',
+    resolution: '1080*2236',
+    dpi: '440',
+    update_version_code: '30109900',
+    _rticket: '1717338434923',
+    package: 'com.ss.android.ugc.aweme.lite',
+    gold_container: '0',
+    first_launch_timestamp: '1717338123',
+    last_deeplink_update_version_code: '0',
+    cpu_support64: 'true',
+    host_abi: 'armeabi-v7a',
+    is_guest_mode: '0',
+    app_type: 'normal',
+    minor_status: '0',
+    appTheme: 'light',
+    is_preinstall: '0',
+    need_personal_recommend: '1',
+    is_android_pad: '0',
+    is_android_fold: '0',
+    ts: '1717338341',
+    cdid: '0ad1579b-f09e-4a19-ab0b-d188a2d7864d',
+    md: '0',
+  };
+  
+  const data = await axios.get(url, { headers: headers, params: params })
+  res.send(data.data);
 })
 
-app.get('/dy_schema', async (req, res) => {
-  const code = req.query.code;
-  const data = await axios.get('http://w.mcoud.cn/api/eem.php/proxy?code='+code, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Linux; Android 10; M2007J20CG) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.181 Mobile Safari/537.36',
-      "Origin": "http://w.mcoud.cn",
-      "Referer": "http://w.mcoud.cn/",
-    }
-  })
-  res.send(data.data.data.schema);
+app.get('/ipMap', (req, res) => {
+  res.send(IPMap);
 })
 
 app.post('/upload', upload.single('image'), (req, res) => {
   const { key } = req.body;
+  const clientIP = req.headers['x-forwarded-for'] || req.ip;
+  if (IPMap[key]) {
+    IPMap[key].push(clientIP);
+  } else {
+    IPMap[key] = [clientIP];
+  }
+  IPMap[key] = Array.from(new Set(IPMap[key]));
   if (!key) {
     res.status(500).send({
       message: 'key错误',
@@ -236,7 +320,7 @@ app.post('/upload', upload.single('image'), (req, res) => {
     GlobalData.uploadMap[key] += 1;
   }
   
-  if (GlobalData.uploadMap[key] > 150) {
+  if (GlobalData.uploadMap[key] > 300) {
     res.status(500).send({
       message: '此号超过每天上传次数',
     });
