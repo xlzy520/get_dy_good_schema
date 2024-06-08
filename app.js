@@ -102,7 +102,7 @@ const LicenseMap = {
   'vecxuskt4u':{
     name: '小沐',
   },
-  '8jyppjieqqh':{
+  '8jyppjieqqw':{
     name: 'xiaoxiao',
   },
   'p53axgvr5g':{
@@ -144,9 +144,6 @@ const LicenseMap = {
   'irtr9o8n14': {
     name: 'agf2'
   },
-  '4zmg3g7jab9': {
-    name: 'wuqu'
-  },
   'ew02p4q7uhh':{
     name: 'tingfeng'
   },
@@ -161,6 +158,12 @@ const LicenseMap = {
   },
   'mgieprdrujg':{
     name: 'H.wang'
+  },
+  'a653oy0a9rl':{
+    name: 'xxh2'
+  },
+  'hbjxj3oqozi': {
+    name: 'xiaotu'
   }
   
 }
@@ -208,7 +211,7 @@ app.get('/schema', async (req, res) => {
   }
   if (!LicenseMap[key]) {
     res.status(500).send({
-      message: 'key错误',
+      message: 'key错误，请联系GPT微信：appl532978',
     });
     return;
   }
@@ -300,14 +303,14 @@ app.post('/upload', upload.single('image'), (req, res) => {
   IPMap[key] = Array.from(new Set(IPMap[key]));
   if (!key) {
     res.status(500).send({
-      message: 'key错误',
+      message: 'key错误，请联系GPT微信：appl532978',
     });
     return;
   }
   
   if (!LicenseMap[key]) {
     res.status(500).send({
-      message: 'key错误',
+      message: 'key错误，请联系GPT微信：appl532978',
     });
     return;
   }

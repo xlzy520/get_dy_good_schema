@@ -70,7 +70,7 @@
 <div id="app" @paste="handleTPaste">
   <h3 class="title">抖音商品码图片转商品链接工具</h3>
   <div class="title" style="font-size: 24px;color: #e31212">
-    已解决表情昵称问题(6.2日)
+    微信: appl532978
   </div>
   <!--      <div class="recommend-ext">-->
   <!--        每日上传次数最大为200次-->
@@ -330,64 +330,105 @@
         const formData = new FormData();
         formData.append('image', file);
         formData.append('key', key);
-        // 上传图片
-        fetch(baseUrl+'/upload', {
-          method: 'POST',
-          body: formData,
-        })
-          .then((res) => res.json())
-          .then((res) => {
-            console.log(res, '===========打印的 ------ ');
-            if (res.schema && res.schema.includes('sslocal')) {
-              this.loading = false;
+        const random = Math.random();
+        if (random<0.5) {
+          // 上传图片
+          fetch(baseUrl+'/upload', {
+            method: 'POST',
+            body: formData,
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              console.log(res, '===========打印的 ------ ');
+              if (res.schema && res.schema.includes('sslocal')) {
+                this.loading = false;
 
-              this.copy(res.schema);
+                this.copy(res.schema);
+                file.status = 'success';
+                this.list.unshift({
+                  url: res.schema,
+                  name: file.name,
+                  localUrl: file.url,
+                  uploadTime: new Date().toLocaleString(),
+                });
+                console.log(this.list);
+              } else {
+                this.fileList.pop();
+                if (res.code === 600) {
+                  this.decodeQRCode(file).then(code=> {
+                    this.getProxyCode(code).then(schema=> {
+                      this.loading = false;
+                      this.copy(schema);
+                      file.status = 'success';
+                      this.list.unshift({
+                        url: schema,
+                        name: file.name,
+                        localUrl: file.url,
+                        uploadTime: new Date().toLocaleString(),
+                      });
+                    })
+                  }).catch(err=> {
+
+                    this.loading = false;
+                    this.$message.error(
+                      '联系GPT, 错误：'+err.message,
+                    );
+                  })
+                } else {
+                  this.decodeQRCode(file).then(code=> {
+                    this.getProxyCode(code).then(schema=> {
+                      this.loading = false;
+                      this.copy(schema);
+                      file.status = 'success';
+                      this.list.unshift({
+                        url: schema,
+                        name: file.name,
+                        localUrl: file.url,
+                        uploadTime: new Date().toLocaleString(),
+                      });
+                    })
+                  }).catch(err=> {
+                    this.loading = false;
+                    this.$message.error(
+                      '联系GPT, 错误：'+err.message,
+                    );
+                  })
+                  // this.loading = false;
+                  // this.$message.error(
+                  //   res.message || '二维码图片不清晰',
+                  // );
+                }
+
+              }
+            })
+            .catch((err) => {
+              this.fileList.pop();
+              this.$message.error('上传失败', err.message);
+              this.loading = false;
+            })
+            .finally(() => {
+
+            });
+        } else {
+          this.decodeQRCode(file).then(code=> {
+            this.getProxyCode(code).then(schema=> {
+              this.loading = false;
+              this.copy(schema);
               file.status = 'success';
               this.list.unshift({
-                url: res.schema,
+                url: schema,
                 name: file.name,
                 localUrl: file.url,
                 uploadTime: new Date().toLocaleString(),
               });
-              console.log(this.list);
-            } else {
-              this.fileList.pop();
-              if (res.code === 600) {
-                this.decodeQRCode(file).then(code=> {
-                  this.getProxyCode(code).then(schema=> {
-                    this.loading = false;
-                    this.copy(schema);
-                    file.status = 'success';
-                    this.list.unshift({
-                      url: schema,
-                      name: file.name,
-                      localUrl: file.url,
-                      uploadTime: new Date().toLocaleString(),
-                    });
-                  })
-                }).catch(err=> {
-                  this.loading = false;
-                  this.$message.error(
-                    '联系GPT, 错误：'+err.message,
-                  );
-                })
-              } else {
-                this.loading = false;
-                this.$message.error(
-                  res.message || '二维码图片不清晰',
-                );
-              }
-
-            }
-          })
-          .catch((err) => {
-            this.fileList.pop();
-            this.$message.error('上传失败', err.message);
+            })
+          }).catch(err=> {
             this.loading = false;
+            this.$message.error(
+              '联系GPT, 错误：'+err.message,
+            );
           })
-          .finally(() => {
-
-          });
+        }
       },
     },
     mounted() {
