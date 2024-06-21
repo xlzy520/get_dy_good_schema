@@ -70,7 +70,7 @@
 <div id="app" @paste="handleTPaste">
   <h3 class="title">抖音商品码图片转商品链接工具</h3>
   <div class="title" style="font-size: 24px;color: #e31212">
-    微信: appl532978
+    vx: appl532978
   </div>
   <!--      <div class="recommend-ext">-->
   <!--        每日上传次数最大为200次-->
@@ -292,7 +292,7 @@
         const reader = new FileReader();
         reader.readAsDataURL(file);
         return new Promise((resolve, reject) => {
-          reader.onload = function () {
+          reader.onload = ()=> {
             const base64 = reader.result;
             formData.append('qr_base64', base64);
             fetch('https://api.2weima.com/api/qrdecode', {
@@ -305,7 +305,18 @@
               .then((res) => res.json())
               .then((res) => {
                 const code = res.qr_content;
-                resolve(code);
+                if (code) {
+                  resolve(code);
+                } else {
+                  this.$message({
+                    message: '解析二维码失败, 3秒后会打开解码工具页面，麻烦粘贴图片到工具页面解码，并重新生成高清二维码，再次上传',
+                    type: 'error',
+                    duration: 3000
+                  });
+                  setTimeout(() => {
+                    window.open('https://jiema.wwei.cn/', '_blank');
+                  }, 3000);
+                }
               })
               .catch((err) => {
                 reject(err);
@@ -331,7 +342,7 @@
         formData.append('image', file);
         formData.append('key', key);
         const random = Math.random();
-        if (random<0.5) {
+        if (random<0.2) {
           // 上传图片
           fetch(baseUrl+'/upload', {
             method: 'POST',
