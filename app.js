@@ -117,7 +117,8 @@ const LicenseMap = {
   },
   '7uxjqwrdm7q': {
     name: 'xiexiaohei',
-    date: '5.27'
+    date: '5.27',
+    remark: '6.27日，续费270;'
   },
   'ew02p4q7uhh':{
     name: 'tingfeng',
@@ -159,9 +160,6 @@ const LicenseMap = {
   'lgtu2ac612':{
     name: 'yemao',
     date: '6.11'
-  },
-  '过期zpkr3tyeve':{
-    name: 'bingxuan'
   },
   'gelscdd64l':{
     name: 'zadd',
