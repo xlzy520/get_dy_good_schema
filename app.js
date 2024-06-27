@@ -168,7 +168,7 @@ const LicenseMap = {
   'ssi57jg2w2j':{
     name: 'fanke',
     date: '0502',
-    remark: ''
+    remark: '6.2日，续费688'
   },
   'cnvdn1gfq9q':{
     name: 'wu',
