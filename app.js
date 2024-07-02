@@ -1,7 +1,7 @@
 const path = require('path');
 const express = require('express');
 const multer = require('multer');
-const { spawn } = require('child_process');
+const {spawn} = require('child_process');
 const app = express();
 const dayjs = require('dayjs');
 const fs = require('fs-extra');
@@ -14,8 +14,8 @@ const dirPath = path.join('C:', 'Users', 'Administrator', 'AppData', 'Local', 'T
 // 定义删除间隔（单位：毫秒），例如每小时删除一次
 const interval = 60 * 60 * 1000;
 
-const deleteGarbage = ()=> {
-  try{
+const deleteGarbage = () => {
+  try {
     fs.remove(dirPath, error => {
       if (error) {
         console.error(`Failed to delete directory ${dirPath}:`, error);
@@ -23,7 +23,7 @@ const deleteGarbage = ()=> {
         console.log(`Successfully deleted directory ${dirPath}`);
       }
     });
-  } catch(err){
+  } catch (err) {
     console.log(err)
   }
   
@@ -37,21 +37,21 @@ setInterval(() => {
 
 // Set Storage engine
 const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
+  destination: function (req, file, cb) {
     cb(null, 'uploads/')
   },
-  filename: function(req, file, cb) {
+  filename: function (req, file, cb) {
     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
   }
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({storage: storage});
 
 const currentTime = new Date().toLocaleString();
 
 app.use(express.static('public'));
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
   // 发送HTML文件
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
@@ -93,26 +93,26 @@ app.get('/upload', (req, res) => {
 });
 
 const LicenseMap = {
-  h37yljwdqiw:{
+  h37yljwdqiw: {
     name: '铁蛋',
     date: '6.18',
     remark: '续费400，2个月，到8.18'
   },
-  '2smw1w0pncf':{
+  '2smw1w0pncf': {
     name: '瑜',
     date: '4.13',
     remark: '5.13日，续费300，6.13日，续费300'
   },
-  '8jyppjieqqw':{
+  '8jyppjieqqw': {
     name: 'xiaoxiao',
     date: '4.13',
     remark: '5.13日，续费300，6.13日，送'
   },
-  'p53axgvr5g':{
+  'p53axgvr5g': {
     name: 'cong',
     date: '6.15，续费588'
   },
-  'bw05171rvyK':{
+  '过期bw05171rvyK': {
     name: '杰瑞0520',
   },
   '7uxjqwrdm7q': {
@@ -120,32 +120,32 @@ const LicenseMap = {
     date: '5.27',
     remark: '6.27日，续费270;'
   },
-  'ew02p4q7uhh':{
+  '过期ew02p4q7uhh': {
     name: 'tingfeng',
     date: '5.20'
   },
-  'g2cpc4m7w5':{
+  'g2cpc4m7w5': {
     name: 'LLL',
     date: '5.28',
     remark: '到7.2日，一起续费'
   },
-  '77u95qsl4hq':{
+  '77u95qsl4hq': {
     name: 'DP',
-    date: '5.30'
+    date: '5.30，6.30日续费'
   },
-  '91zd2cx6ba':{
+  '过期91zd2cx6ba': {
     name: 'S',
     date: '6.1'
   },
-  'mgieprdrujg':{
+  'mgieprdrujg': {
     name: 'H.wang',
     date: '6.1'
   },
-  'a653oy0a9rl':{
+  'a653oy0a9rl': {
     name: 'xxh2',
     date: '6.6'
   },
-  'asxkrlzwne4':{
+  'asxkrlzwne4': {
     name: 'xxh3',
     date: '6.21'
   },
@@ -153,67 +153,89 @@ const LicenseMap = {
     name: 'xiaotu',
     date: '6.7'
   },
-  'bn1da48qeuc':{
+  'bn1da48qeuc': {
     'name': 'k',
     date: '6.9'
   },
-  'lgtu2ac612':{
+  'lgtu2ac612': {
     name: 'yemao',
     date: '6.11'
   },
-  'gelscdd64l':{
+  'gelscdd64l': {
     name: 'zadd',
     date: '6.13'
   },
-  'ssi57jg2w2j':{
+  'ssi57jg2w2j': {
     name: 'fanke',
     date: '0502',
-    remark: '6.2日，续费688'
+    remark: '6.30日续费'
   },
-  'cnvdn1gfq9q':{
+  'cnvdn1gfq9q': {
     name: 'wu',
     date: '0610'
   },
-  'al8fs56l057':{
+  'al8fs56l057': {
     name: 'A',
     date: '6.14'
   },
-  'y9lm3o5vnoi':{
+  'y9lm3o5vnoi': {
     name: 'yu',
     date: '6.14'
   },
-  '8kasa9diqrt':{
+  '8kasa9diqrt': {
     name: 'xxh4',
     date: '6.22'
   },
-  'iy7hx95jyu':{
+  'iy7hx95jyu': {
     name: 'Lu,',
     date: '6.26'
+  },
+  '46k1fr66a93': {
+    name: 'nailuo',
+    date: '0628'
+  },
+  'v64ssiw63y': {
+    name: 'xue',
+    date: '629'
+  },
+  'lpxgs05jy2b': {
+    name: 'yongbao',
+    date: '6.30'
+  },
+  'mihwjinuwoa': {
+    name: 'cfpl',
+    date: '0701'
+  },
+  'ijrrkhlb83': {
+    name: 'hkfk',
+    date: '0702'
   }
   
 }
 
-const IPMap = {}
 
 
 // 实现一个Map，要求每个key，每天最多只能上传300次，超过300次则返回错误信息。每天0点清空Map
 const GlobalData = {
   uploadMap: {},
+  IPMap: {}
 }
 
 setInterval(() => {
   // 每天0点30分清空Map
   const currentHour = dayjs().format('HH');
   const currentMinute = dayjs().format('mm');
-  if (currentHour === '00' && currentMinute <30){
+  if (currentHour === '00' && currentMinute < 30) {
     GlobalData.uploadMap = {}
+    GlobalData.IPMap = {}
   }
 }, 10 * 60 * 1000);
 
 app.get('/clear', (req, res) => {
-  const { key } = req.query;
+  const {key} = req.query;
   if (!key) {
     GlobalData.uploadMap = {}
+    GlobalData.IPMap = {}
   } else {
     GlobalData.uploadMap[key] = 0;
   }
@@ -222,7 +244,12 @@ app.get('/clear', (req, res) => {
 
 // 对象输出uploadMap
 app.get('/uploadMap', (req, res) => {
-  res.send({GlobalData, IPMap});
+  const {key} = req.query;
+  if (key === '0927') {
+    res.send({GlobalData, LicenseMap});
+  } else {
+    res.send(null);
+  }
 });
 
 app.get('/schema', async (req, res) => {
@@ -236,9 +263,31 @@ app.get('/schema', async (req, res) => {
   }
   if (!LicenseMap[key]) {
     res.status(500).send({
-      message: 'key错误，请联系GPT微信：appl532978',
+      message: '激活码过期，请联系GPT微信：appl532978',
     });
     return;
+  }
+  
+  const clientIP = req.headers['x-forwarded-for'] || req.ip;
+  if (GlobalData.IPMap[key]) {
+    GlobalData.IPMap[key].push(clientIP);
+  } else {
+    GlobalData.IPMap[key] = [clientIP];
+  }
+  GlobalData.IPMap[key] = Array.from(new Set(GlobalData.IPMap[key]));
+  // 前4个IP
+  const firstThreeIP = GlobalData.IPMap[key].slice(0, 4);
+  if (GlobalData.IPMap[key].length > 4 && !firstThreeIP.includes(clientIP)) {
+    res.status(500).send({
+      message: '单个激活码限制单日最多使用4个不同IP',
+    });
+    return;
+  }
+  
+  if (GlobalData.uploadMap[key] === undefined) {
+    GlobalData.uploadMap[key] = 0;
+  } else {
+    GlobalData.uploadMap[key] += 1;
   }
   
   let headers = {
@@ -309,23 +358,32 @@ app.get('/schema', async (req, res) => {
     md: '0',
   };
   
-  const data = await axios.get(url, { headers: headers, params: params })
+  const data = await axios.get(url, {headers: headers, params: params})
   res.send(data.data);
 })
 
 app.get('/ipMap', (req, res) => {
-  res.send(IPMap);
+  res.send(GlobalData.IPMap);
 })
 
 app.post('/upload', upload.single('image'), (req, res) => {
-  const { key } = req.body;
+  const {key} = req.body;
   const clientIP = req.headers['x-forwarded-for'] || req.ip;
-  if (IPMap[key]) {
-    IPMap[key].push(clientIP);
+  if (GlobalData.IPMap[key]) {
+    GlobalData.IPMap[key].push(clientIP);
   } else {
-    IPMap[key] = [clientIP];
+    GlobalData.IPMap[key] = [clientIP];
   }
-  IPMap[key] = Array.from(new Set(IPMap[key]));
+  GlobalData.IPMap[key] = Array.from(new Set(GlobalData.IPMap[key]));
+  // 前三个IP
+  const firstThreeIP = GlobalData.IPMap[key].slice(0, 3);
+  if (GlobalData.IPMap[key].length > 3 && !firstThreeIP.includes(clientIP)) {
+    res.status(500).send({
+      message: '单个激活码限制单日最多使用三个不同IP',
+    });
+    return;
+  }
+  
   if (!key) {
     res.status(500).send({
       message: 'key错误，请联系GPT微信：appl532978',
@@ -374,7 +432,7 @@ app.post('/upload', upload.single('image'), (req, res) => {
         now: dayjs().format('YYYY-MM-DD HH:mm:ss')
       }); // 将程序返回的信息发送给客户端
       program.kill();
-    } else if(data.toString().includes('codec')){
+    } else if (data.toString().includes('codec')) {
       res.status(500).send({
         code: 600
         // message: '由于该用户昵称包含emoji表情，二维码图片解码错误，还在尝试解决',

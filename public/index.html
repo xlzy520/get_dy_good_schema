@@ -326,6 +326,12 @@
       },
       getProxyCode(code){
         return fetch(baseUrl+`/schema?code=${code}&key=${key}`).then(res=>res.json()).then(res=>{
+          if (res.message) {
+            this.$message.error(
+              '联系GPT, 错误：'+res.message,
+            );
+            return
+          }
           return res.data.schema
         })
       },
