@@ -93,7 +93,7 @@ app.get('/upload', (req, res) => {
 });
 
 const LicenseMap = {
-  h37yljwdqiw: {
+  'jn4fa20s8qr': {
     name: '铁蛋',
     date: '6.18',
     remark: '续费400，2个月，到8.18'
@@ -238,6 +238,7 @@ app.get('/clear', (req, res) => {
     GlobalData.IPMap = {}
   } else {
     GlobalData.uploadMap[key] = 0;
+    GlobalData.IPMap[key] = [];
   }
   res.send('清空成功');
 })
