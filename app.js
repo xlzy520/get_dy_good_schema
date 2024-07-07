@@ -92,8 +92,6 @@ app.get('/upload', (req, res) => {
   program.stdin.write(imagePath + '\n');
 });
 
-const ADMIN_KEY = 'jlugzvrxn3p'
-
 const LicenseMap = {
   'jn4fa20s8qr': {
     name: '铁蛋',
@@ -117,7 +115,7 @@ const LicenseMap = {
   '过期bw05171rvyK': {
     name: '杰瑞0520',
   },
-  '7uxjqwrdm7q': {
+  '7uxjqwrdm5q': {
     name: 'xiexiaohei',
     date: '5.27',
     remark: '6.27日，续费270;'
@@ -139,7 +137,7 @@ const LicenseMap = {
     name: 'S',
     date: '6.1'
   },
-  'mgieprdrujg': {
+  '过期mgieprdrujg': {
     name: 'H.wang',
     date: '6.1'
   },
@@ -220,8 +218,24 @@ const LicenseMap = {
     name: 'o',
     date: '0703'
   },
-  [ADMIN_KEY]:{
+  'jlugzvrxn3p':{
     name: 'me'
+  },
+  'c2cx58gnu0r':{
+    name: 'A cong',
+    date: '0704'
+  },
+  '0hp0ltl9f3nk':{
+    name: 'zhonger',
+    date: '7.05,2yue'
+  },
+  '2yp9i5nnscr':{
+    name: 'hkfg2',
+    date: '7.6'
+  },
+  'ou9s9j9pyck':{
+    name: 'xin2',
+    date: '7.7'
   }
   
 }
@@ -282,8 +296,6 @@ app.get('/schema', async (req, res) => {
     return;
   }
   
-  const isAdmin = key === ADMIN_KEY;
-  
   const clientIP = req.headers['x-forwarded-for'] || req.ip;
   if (GlobalData.IPMap[key]) {
     GlobalData.IPMap[key].push(clientIP);
@@ -292,8 +304,8 @@ app.get('/schema', async (req, res) => {
   }
   GlobalData.IPMap[key] = Array.from(new Set(GlobalData.IPMap[key]));
   // 前4个IP
-  const firstThreeIP = GlobalData.IPMap[key].slice(0, 4);
-  if (!isAdmin && GlobalData.IPMap[key].length > 4 && !firstThreeIP.includes(clientIP)) {
+  const firstThreeIP = GlobalData.IPMap[key].slice(0, 8);
+  if (GlobalData.IPMap[key].length > 8 && !firstThreeIP.includes(clientIP)) {
     res.status(500).send({
       message: '单个激活码限制单日最多使用4个不同IP',
     });
@@ -384,21 +396,6 @@ app.get('/ipMap', (req, res) => {
 
 app.post('/upload', upload.single('image'), (req, res) => {
   const {key} = req.body;
-  if (!key) {
-    res.status(500).send({
-      message: 'key错误，请联系GPT微信：appl532978',
-    });
-    return;
-  }
-  if (!LicenseMap[key]) {
-    res.status(500).send({
-      message: 'key错误，请联系GPT微信：appl532978',
-    });
-    return;
-  }
-  
-  const isAdmin = key === ADMIN_KEY;
-  
   const clientIP = req.headers['x-forwarded-for'] || req.ip;
   if (GlobalData.IPMap[key]) {
     GlobalData.IPMap[key].push(clientIP);
@@ -407,13 +404,29 @@ app.post('/upload', upload.single('image'), (req, res) => {
   }
   GlobalData.IPMap[key] = Array.from(new Set(GlobalData.IPMap[key]));
   // 前三个IP
-  const firstThreeIP = GlobalData.IPMap[key].slice(0, 3);
-  if (!isAdmin && GlobalData.IPMap[key].length > 3 && !firstThreeIP.includes(clientIP)) {
+  const firstThreeIP = GlobalData.IPMap[key].slice(0, 8);
+  if (GlobalData.IPMap[key].length > 8 && !firstThreeIP.includes(clientIP)) {
     res.status(500).send({
-      message: '单个激活码限制单日最多使用三个不同IP',
+      message: '单个激活码限制单日最多使用8个不同IP',
     });
     return;
   }
+  
+  if (!key) {
+    res.status(500).send({
+      message: 'key错误，请联系GPT微信：appl532978',
+    });
+    return;
+  }
+  
+  if (!LicenseMap[key]) {
+    res.status(500).send({
+      message: 'key错误，请联系GPT微信：appl532978',
+    });
+    return;
+  }
+  
+  console.log(GlobalData, '===========打印的 ------ ');
   
   if (GlobalData.uploadMap[key] === undefined) {
     GlobalData.uploadMap[key] = 0;

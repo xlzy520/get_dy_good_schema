@@ -91,6 +91,20 @@
       <div class="el-upload__tip" slot="tip">可按下 Ctrl+V 粘贴上传</div>
     </el-upload>
   </div>
+  <div>
+    <div style="color: #409eff;margin-top: 10px;margin-bottom: 10px;">
+      备用方案：假如遇到上面图片解析服务器不可用，请使用
+      <a href="https://cli.im/deqr">草料解码</a>
+      或者
+      <a href="https://jiema.wwei.cn/">微微解码</a>
+      解码工具，解析出二维码文本，粘贴到下方输入框内，点击确定
+    </div>
+    <el-input
+        v-model="code"
+        placeholder="二维码图片解析后的文本，例如activity_4hwoDbxAON8"
+        style="width: 400px"></el-input>
+    <button @click="submitText">确定</button>
+  </div>
   <div class="short-url">
     <div class="short-url-title">已上传图片</div>
     <div v-show="!hasValue" class="short-url-item bg-gray"></div>
@@ -173,6 +187,7 @@
         IPInfo: null,
         useUpload2: false,
         useUpload3: false,
+        code: ''
       };
     },
     computed: {
@@ -181,6 +196,18 @@
       },
     },
     methods: {
+      submitText(){
+        this.getProxyCode(this.code).then(schema=> {
+          this.loading = false;
+          this.copy(schema);
+          this.list.unshift({
+            url: schema,
+            name: this.code,
+            localUrl: schema,
+            uploadTime: new Date().toLocaleString(),
+          });
+        })
+      },
       saveConfig() {
         localStorage.setItem('SESSDATA', this.SESSDATA);
         localStorage.setItem('bili_jct', this.bili_jct);
