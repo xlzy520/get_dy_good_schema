@@ -101,9 +101,9 @@ const LicenseMap = {
   '2smw1w0pncf': {
     name: '瑜',
     date: '4.13',
-    remark: '5.13日，续费300，6.13日，续费300'
+    remark: '5.13日，续费300，6.13日，续费300, 7.13日，续费200'
   },
-  '8jyppjieqqw': {
+  '过期8jyppjieqqw': {
     name: 'xiaoxiao',
     date: '4.13',
     remark: '5.13日，续费300，6.13日，送'
@@ -143,7 +143,7 @@ const LicenseMap = {
   },
   'a653oy0a9rl': {
     name: 'xxh2',
-    date: '6.6'
+    date: '6.6，7.6日，续费688'
   },
   'asxkrlzwne4': {
     name: 'xxh3',
@@ -151,9 +151,9 @@ const LicenseMap = {
   },
   'hbjxj3oqozi': {
     name: 'xiaotu',
-    date: '6.7'
+    date: '6.7，7.7日续费200(当天转了150红包)'
   },
-  'bn1da48qeuc': {
+  '过期bn1da48qeuc': {
     'name': 'k',
     date: '6.9'
   },
