@@ -93,7 +93,7 @@ app.get('/upload', (req, res) => {
 });
 
 const LicenseMap = {
-  'jn4fa20s8qr': {
+  'jn4fa20s8qd': {
     name: '铁蛋',
     date: '6.18',
     remark: '续费400，2个月，到8.18'
@@ -101,9 +101,9 @@ const LicenseMap = {
   '2smw1w0pncf': {
     name: '瑜',
     date: '4.13',
-    remark: '5.13日，续费300，6.13日，续费300, 7.13日，续费200'
+    remark: '5.13日，续费300，6.13日，续费300'
   },
-  '过期8jyppjieqqw': {
+  '8jyppjieqqw': {
     name: 'xiaoxiao',
     date: '4.13',
     remark: '5.13日，续费300，6.13日，送'
@@ -127,7 +127,7 @@ const LicenseMap = {
   'g2cpc4m7w5': {
     name: 'LLL',
     date: '5.28',
-    remark: '到7.2日，一起续费'
+    remark: '6.30日，续费88'
   },
   '77u95qsl4hq': {
     name: 'DP',
@@ -143,27 +143,27 @@ const LicenseMap = {
   },
   'a653oy0a9rl': {
     name: 'xxh2',
-    date: '6.6，7.6日，续费688'
+    date: '6.6，7.6续费288'
   },
   'asxkrlzwne4': {
     name: 'xxh3',
     date: '6.21'
   },
-  'hbjxj3oqozi': {
+  '过期hbjxj3oqozi': {
     name: 'xiaotu',
-    date: '6.7，7.7日续费200(当天转了150红包)'
+    date: '6.7'
   },
   '过期bn1da48qeuc': {
     'name': 'k',
     date: '6.9'
   },
-  'lgtu2ac612': {
+  '过期lgtu2ac612': {
     name: 'yemao',
     date: '6.11'
   },
-  'gelscdd64l': {
+  '过期gelscdd64l': {
     name: 'zadd',
-    date: '6.13'
+    date: '6.13，7.13续费'
   },
   'ssi57jg2w2j': {
     name: 'fanke',
@@ -172,13 +172,17 @@ const LicenseMap = {
   },
   'cnvdn1gfq9q': {
     name: 'wu',
-    date: '0610'
+    date: '0610，7.10续费'
   },
-  'al8fs56l057': {
+  '过期al8fs56l057': {
     name: 'A',
     date: '6.14'
   },
-  'y9lm3o5vnoi': {
+  'ui89h6b807':{
+    name: 'xy',
+    date: '7.14'
+  },
+  '过期y9lm3o5vnoi': {
     name: 'yu',
     date: '6.14'
   },
@@ -236,6 +240,10 @@ const LicenseMap = {
   'ou9s9j9pyck':{
     name: 'xin2',
     date: '7.7'
+  },
+  '1xs4uljgcz8j':{
+    name: 'duanduan',
+    date: '7.8'
   }
   
 }
@@ -441,8 +449,8 @@ app.post('/upload', upload.single('image'), (req, res) => {
     return;
   }
   // res.send({
-  //   schema: 'sslocal://polaris/proxy?enter_from=qrcode&invite_from=qrcode&invite_token=sta1-NNQgxwSMPVOSHhcaiz0JWJTauuKceasal3JB3OdH8c_6SnawW-nZQ930_jDJaaOQvDlNZBbUlTyBGKoitlTPpR8cZe453N22IJwQ1CmrqmJtr6L7B5rEuHFaQAdI_8n-Uu4BEm44kMKLb2jefseVVQ&polaris_share_timestamp=onecent_bargain_invite_2329_1712934403125753826&scene_key=main&ug_activity_id=onecent_bargain&allow_pending_ms=5000',
-  //   now: dayjs().format('YYYY-MM-DD HH:mm:ss')
+  //   schema: 'sslocal://polaris/proxy?enter_from=qrcode&invite_from=qrcode&invite_token=sta1-NNQgxwSMPVOSHhcaiz0JWJTauuKceasal3JB3OdH8c_6SnawW-nZQ930_jDJaaOQvDlNZBbUlTyBGKoitlTPpR8cZe453N22IJwQ1CmrqmJtr6L7B5rEuHFaQAdI_8n-Uu4BEm44kMKLb2jefseVVQ&polaris_share_timestamp=onecent_bargain_invite_2329_1712934403125753826&scene_key=main&ug_activity_id=onecent_bargain&allow_pending_ms=5000',
+  //   now: dayjs().format('YYYY-MM-DD HH:mm:ss')
   // });
   //
   // return;
@@ -481,3 +489,4 @@ app.post('/upload', upload.single('image'), (req, res) => {
 app.listen(5005, () => {
   console.log('Server started on port 5005');
 });
+
