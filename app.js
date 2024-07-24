@@ -110,36 +110,21 @@ const LicenseMap = {
   },
   'p53axgvr8g': {
     name: 'cong',
-    date: '6.15，续费588'
-  },
-  '过期bw05171rvyK': {
-    name: '杰瑞0520',
+    date: '6.15，续费588，7.15日，续费588'
   },
   '7uxjqwrdm5q': {
     name: 'xiexiaohei',
     date: '5.27',
     remark: '6.27日，续费270;'
   },
-  '过期ew02p4q7uhh': {
-    name: 'tingfeng',
-    date: '5.20'
-  },
   'g2cpc4m7w5': {
     name: 'LLL',
     date: '5.28',
-    remark: '6.30日，续费88'
+    remark: '6.30日，续费88，'
   },
   '77u95qsl4hq': {
     name: 'DP',
     date: '5.30，6.30日续费'
-  },
-  '过期91zd2cx6ba': {
-    name: 'S',
-    date: '6.1'
-  },
-  '过期mgieprdrujg': {
-    name: 'H.wang',
-    date: '6.1'
   },
   'a653oy0a9rl': {
     name: 'xxh2',
@@ -147,23 +132,7 @@ const LicenseMap = {
   },
   'asxkrlzwne4': {
     name: 'xxh3',
-    date: '6.21'
-  },
-  '过期hbjxj3oqozi': {
-    name: 'xiaotu',
-    date: '6.7'
-  },
-  '过期bn1da48qeuc': {
-    'name': 'k',
-    date: '6.9'
-  },
-  '过期lgtu2ac612': {
-    name: 'yemao',
-    date: '6.11'
-  },
-  '过期gelscdd64l': {
-    name: 'zadd',
-    date: '6.13，7.13续费'
+    date: '6.21。7.22日，续费600'
   },
   'ssi57jg2w2j': {
     name: 'fanke',
@@ -174,21 +143,13 @@ const LicenseMap = {
     name: 'wu',
     date: '0610，7.10续费'
   },
-  '过期al8fs56l057': {
-    name: 'A',
-    date: '6.14'
-  },
   'ui89h6b807':{
     name: 'xy',
     date: '7.14'
   },
-  '过期y9lm3o5vnoi': {
-    name: 'yu',
-    date: '6.14'
-  },
   '8kasa9diqrt': {
     name: 'xxh4',
-    date: '6.22'
+    date: '6.22。7.22日，续费600'
   },
   'iy7hx95jyu': {
     name: 'Lu,',
@@ -312,10 +273,10 @@ app.get('/schema', async (req, res) => {
   }
   GlobalData.IPMap[key] = Array.from(new Set(GlobalData.IPMap[key]));
   // 前4个IP
-  const firstThreeIP = GlobalData.IPMap[key].slice(0, 8);
-  if (GlobalData.IPMap[key].length > 8 && !firstThreeIP.includes(clientIP)) {
+  const firstThreeIP = GlobalData.IPMap[key].slice(0, 6);
+  if (GlobalData.IPMap[key].length > 6 && !firstThreeIP.includes(clientIP)) {
     res.status(500).send({
-      message: '单个激活码限制单日最多使用4个不同IP',
+      message: '单个激活码限制单日最多使用6个不同IP',
     });
     return;
   }
@@ -412,10 +373,10 @@ app.post('/upload', upload.single('image'), (req, res) => {
   }
   GlobalData.IPMap[key] = Array.from(new Set(GlobalData.IPMap[key]));
   // 前三个IP
-  const firstThreeIP = GlobalData.IPMap[key].slice(0, 8);
-  if (GlobalData.IPMap[key].length > 8 && !firstThreeIP.includes(clientIP)) {
+  const firstThreeIP = GlobalData.IPMap[key].slice(0, 6);
+  if (GlobalData.IPMap[key].length > 6 && !firstThreeIP.includes(clientIP)) {
     res.status(500).send({
-      message: '单个激活码限制单日最多使用8个不同IP',
+      message: '单个激活码限制单日最多使用6个不同IP',
     });
     return;
   }
