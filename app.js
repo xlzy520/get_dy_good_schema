@@ -101,12 +101,7 @@ const LicenseMap = {
   '2smw1w0pncf': {
     name: '瑜',
     date: '4.13',
-    remark: '5.13日，续费300，6.13日，续费300'
-  },
-  '8jyppjieqqw': {
-    name: 'xiaoxiao',
-    date: '4.13',
-    remark: '5.13日，续费300，6.13日，送'
+    remark: '5.13日，续费300，6.13日，续费300，7.13日，续费'
   },
   'p53axgvr8g': {
     name: 'cong',
@@ -115,12 +110,12 @@ const LicenseMap = {
   '7uxjqwrdm5q': {
     name: 'xiexiaohei',
     date: '5.27',
-    remark: '6.27日，续费270;'
+    remark: '6.27日，续费270;7.27日，续费'
   },
   'g2cpc4m7w5': {
     name: 'LLL',
     date: '5.28',
-    remark: '6.30日，续费88，'
+    remark: '6.30日，续费88，7.28日，续费'
   },
   '77u95qsl4hq': {
     name: 'DP',
@@ -128,7 +123,7 @@ const LicenseMap = {
   },
   'a653oy0a9rl': {
     name: 'xxh2',
-    date: '6.6，7.6续费288'
+    date: '6.6，7.6续费288，8.6日续费288'
   },
   'asxkrlzwne4': {
     name: 'xxh3',
@@ -137,7 +132,7 @@ const LicenseMap = {
   'ssi57jg2w2j': {
     name: 'fanke',
     date: '0502',
-    remark: '6.30日续费'
+    remark: '6.30日续费，7.30日续费'
   },
   'cnvdn1gfq9q': {
     name: 'wu',
@@ -151,21 +146,13 @@ const LicenseMap = {
     name: 'xxh4',
     date: '6.22。7.22日，续费600'
   },
-  'iy7hx95jyu': {
-    name: 'Lu,',
-    date: '6.26'
-  },
-  '46k1fr66a93': {
-    name: 'nailuo',
-    date: '0628'
-  },
   'v64ssiw63y': {
     name: 'xue',
-    date: '629'
+    date: '629，7.29日，续费'
   },
   'lpxgs05jy2b': {
     name: 'yongbao',
-    date: '6.30'
+    date: '6.30，7.30日，续费'
   },
   'mihwjinuwoa': {
     name: 'cfpl',
@@ -173,26 +160,26 @@ const LicenseMap = {
   },
   'ijrrkhlb83': {
     name: 'hkfk',
-    date: '0702'
+    date: '0702，8.2日续费'
   },
   'wafj58xaxhf':{
     name: 'xin',
-    date: '0703'
+    date: '0703，8.3日续费'
   },
   'tyu7nvbcaa':{
     name: 'o',
-    date: '0703'
+    date: '0703，8.3日续费'
   },
   'jlugzvrxn3p':{
     name: 'me'
   },
   'c2cx58gnu0r':{
     name: 'A cong',
-    date: '0704'
+    date: '0704，8.4日续费'
   },
   '0hp0ltl9f3nk':{
     name: 'zhonger',
-    date: '7.05,2yue'
+    date: '7.05,续费，8.05日续费'
   },
   '2yp9i5nnscr':{
     name: 'hkfg2',
@@ -205,8 +192,11 @@ const LicenseMap = {
   '1xs4uljgcz8j':{
     name: 'duanduan',
     date: '7.8'
-  }
-  
+  },
+  'hbjxj3oqozi':{
+    name: 'xiaotu',
+    date: '7.24, 收88'
+  },
 }
 
 
