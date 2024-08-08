@@ -154,10 +154,6 @@ const LicenseMap = {
     name: 'yongbao',
     date: '6.30，7.30日，续费'
   },
-  'mihwjinuwoa': {
-    name: 'cfpl',
-    date: '0701'
-  },
   'ijrrkhlb83': {
     name: 'hkfk',
     date: '0702，8.2日续费'
@@ -183,15 +179,11 @@ const LicenseMap = {
   },
   '2yp9i5nnscr':{
     name: 'hkfg2',
-    date: '7.6'
+    date: '7.6，8.6日续费'
   },
   'ou9s9j9pyck':{
     name: 'xin2',
-    date: '7.7'
-  },
-  '1xs4uljgcz8j':{
-    name: 'duanduan',
-    date: '7.8'
+    date: '7.7，8.7日续费'
   },
   'hbjxj3oqozi':{
     name: 'xiaotu',
