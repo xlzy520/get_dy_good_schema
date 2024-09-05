@@ -7,34 +7,6 @@ const dayjs = require('dayjs');
 const fs = require('fs-extra');
 const axios = require("axios");
 
-
-// 定义要删除的目录路径
-const dirPath = path.join('C:', 'Users', 'Administrator', 'AppData', 'Local', 'Temp', '2');
-
-// 定义删除间隔（单位：毫秒），例如每小时删除一次
-const interval = 60 * 60 * 1000;
-
-const deleteGarbage = () => {
-  try {
-    fs.remove(dirPath, error => {
-      if (error) {
-        console.error(`Failed to delete directory ${dirPath}:`, error);
-      } else {
-        console.log(`Successfully deleted directory ${dirPath}`);
-      }
-    });
-  } catch (err) {
-    console.log(err)
-  }
-  
-}
-
-
-deleteGarbage()
-setInterval(() => {
-  deleteGarbage()
-}, interval);
-
 // Set Storage engine
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -62,35 +34,6 @@ const getSchema = (string) => {
   const schema = string.slice(schemaIndex, string.indexOf("'", schemaIndex));
   return schema;
 };
-
-
-app.get('/upload', (req, res) => {
-  const program = spawn('test.exe');
-  // const imagePath = req.file.path; // 获取上传文件的路径
-  
-  // const imagePath = path.join(__dirname, '222.jpg');
-  const imagePath = req.file.path; // 获取上传文件的路径
-  
-  program.stdout.on('data', (data) => {
-    console.log(`${currentTime} 输出: ${data}`);
-    if (data.toString().includes('sta')) {
-      const result = data.toString()
-      const schema = getSchema(result);
-      res.send({
-        schema,
-        now: dayjs().format('YYYY-MM-DD HH:mm:ss')
-      }); // 将程序返回的信息发送给客户端
-      program.kill();
-    }
-  });
-  
-  program.stderr.on('data', (data) => {
-    console.error(`错误: ${data}`);
-    res.status(500).send(data); // 发生错误时，将错误信息发送给客户端
-  });
-  
-  program.stdin.write(imagePath + '\n');
-});
 
 const LicenseMap = {
   'jn4fa20s8qd': {
@@ -344,90 +287,6 @@ app.get('/schema', async (req, res) => {
 app.get('/ipMap', (req, res) => {
   res.send(GlobalData.IPMap);
 })
-
-app.post('/upload', upload.single('image'), (req, res) => {
-  const {key} = req.body;
-  const clientIP = req.headers['x-forwarded-for'] || req.ip;
-  if (GlobalData.IPMap[key]) {
-    GlobalData.IPMap[key].push(clientIP);
-  } else {
-    GlobalData.IPMap[key] = [clientIP];
-  }
-  GlobalData.IPMap[key] = Array.from(new Set(GlobalData.IPMap[key]));
-  // 前三个IP
-  const firstThreeIP = GlobalData.IPMap[key].slice(0, 6);
-  if (GlobalData.IPMap[key].length > 6 && !firstThreeIP.includes(clientIP)) {
-    res.status(500).send({
-      message: '单个激活码限制单日最多使用6个不同IP',
-    });
-    return;
-  }
-  
-  if (!key) {
-    res.status(500).send({
-      message: 'key错误，请联系GPT微信：appl532978',
-    });
-    return;
-  }
-  
-  if (!LicenseMap[key]) {
-    res.status(500).send({
-      message: 'key错误，请联系GPT微信：appl532978',
-    });
-    return;
-  }
-  
-  console.log(GlobalData, '===========打印的 ------ ');
-  
-  if (GlobalData.uploadMap[key] === undefined) {
-    GlobalData.uploadMap[key] = 0;
-  } else {
-    GlobalData.uploadMap[key] += 1;
-  }
-  
-  if (GlobalData.uploadMap[key] > 300) {
-    res.status(500).send({
-      message: '此号超过每天上传次数',
-    });
-    return;
-  }
-  // res.send({
-  //   schema: 'sslocal://polaris/proxy?enter_from=qrcode&invite_from=qrcode&invite_token=sta1-NNQgxwSMPVOSHhcaiz0JWJTauuKceasal3JB3OdH8c_6SnawW-nZQ930_jDJaaOQvDlNZBbUlTyBGKoitlTPpR8cZe453N22IJwQ1CmrqmJtr6L7B5rEuHFaQAdI_8n-Uu4BEm44kMKLb2jefseVVQ&polaris_share_timestamp=onecent_bargain_invite_2329_1712934403125753826&scene_key=main&ug_activity_id=onecent_bargain&allow_pending_ms=5000',
-  //   now: dayjs().format('YYYY-MM-DD HH:mm:ss')
-  // });
-  //
-  // return;
-  
-  const program = spawn('test.exe');
-  const imagePath = req.file.path; // 获取上传文件的路径
-  
-  program.stdout.on('data', (data) => {
-    console.log(`${currentTime} 输出: ${data}`);
-    if (data.toString().includes('sta')) {
-      const result = data.toString()
-      const schema = getSchema(result);
-      res.send({
-        schema,
-        now: dayjs().format('YYYY-MM-DD HH:mm:ss')
-      }); // 将程序返回的信息发送给客户端
-      program.kill();
-    } else if (data.toString().includes('codec')) {
-      res.status(500).send({
-        code: 600
-        // message: '由于该用户昵称包含emoji表情，二维码图片解码错误，还在尝试解决',
-        // message: '由于该用户昵称包含emoji表情，二维码图片解码错误，还在尝试解决',
-      });
-      program.kill();
-    }
-  });
-  
-  program.stderr.on('data', (data) => {
-    console.error(`错误: ${data}`);
-    // res.status(500).send(data); // 发生错误时，将错误信息发送给客户端
-  });
-  
-  program.stdin.write(imagePath + '\n');
-});
 
 app.listen(5005, () => {
   console.log('Server started on port 5005');
