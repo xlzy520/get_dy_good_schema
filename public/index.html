@@ -359,7 +359,7 @@
             );
             return
           }
-          return res.data.schema
+          return res.data.data.schema
         })
       },
       handleUpload({ file }) {
@@ -374,105 +374,24 @@
         const formData = new FormData();
         formData.append('image', file);
         formData.append('key', key);
-        const random = Math.random();
-        if (random<0.2) {
-          // 上传图片
-          fetch(baseUrl+'/upload', {
-            method: 'POST',
-            body: formData,
-          })
-            .then((res) => res.json())
-            .then((res) => {
-              console.log(res, '===========打印的 ------ ');
-              if (res.schema && res.schema.includes('sslocal')) {
-                this.loading = false;
-
-                this.copy(res.schema);
-                file.status = 'success';
-                this.list.unshift({
-                  url: res.schema,
-                  name: file.name,
-                  localUrl: file.url,
-                  uploadTime: new Date().toLocaleString(),
-                });
-                console.log(this.list);
-              } else {
-                this.fileList.pop();
-                if (res.code === 600) {
-                  this.decodeQRCode(file).then(code=> {
-                    this.getProxyCode(code).then(schema=> {
-                      this.loading = false;
-                      this.copy(schema);
-                      file.status = 'success';
-                      this.list.unshift({
-                        url: schema,
-                        name: file.name,
-                        localUrl: file.url,
-                        uploadTime: new Date().toLocaleString(),
-                      });
-                    })
-                  }).catch(err=> {
-
-                    this.loading = false;
-                    this.$message.error(
-                      '联系GPT, 错误：'+err.message,
-                    );
-                  })
-                } else {
-                  this.decodeQRCode(file).then(code=> {
-                    this.getProxyCode(code).then(schema=> {
-                      this.loading = false;
-                      this.copy(schema);
-                      file.status = 'success';
-                      this.list.unshift({
-                        url: schema,
-                        name: file.name,
-                        localUrl: file.url,
-                        uploadTime: new Date().toLocaleString(),
-                      });
-                    })
-                  }).catch(err=> {
-                    this.loading = false;
-                    this.$message.error(
-                      '联系GPT, 错误：'+err.message,
-                    );
-                  })
-                  // this.loading = false;
-                  // this.$message.error(
-                  //   res.message || '二维码图片不清晰',
-                  // );
-                }
-
-              }
-            })
-            .catch((err) => {
-              this.fileList.pop();
-              this.$message.error('上传失败', err.message);
-              this.loading = false;
-            })
-            .finally(() => {
-
-            });
-        } else {
-          this.decodeQRCode(file).then(code=> {
-            this.getProxyCode(code).then(schema=> {
-              this.loading = false;
-              this.copy(schema);
-              file.status = 'success';
-              this.list.unshift({
-                url: schema,
-                name: file.name,
-                localUrl: file.url,
-                uploadTime: new Date().toLocaleString(),
-              });
-            })
-          }).catch(err=> {
+        this.decodeQRCode(file).then(code=> {
+          this.getProxyCode(code).then(schema=> {
             this.loading = false;
-            this.$message.error(
-              '联系GPT, 错误：'+err.message,
-            );
+            this.copy(schema);
+            file.status = 'success';
+            this.list.unshift({
+              url: schema,
+              name: file.name,
+              localUrl: file.url,
+              uploadTime: new Date().toLocaleString(),
+            });
           })
-        }
+        }).catch(err=> {
+          this.loading = false;
+          this.$message.error(
+            '联系GPT, 错误：'+err.message,
+          );
+        })
       },
     },
     mounted() {
